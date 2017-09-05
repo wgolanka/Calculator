@@ -20,11 +20,12 @@ public class MainActivity extends AppCompatActivity
     Context context;
 
     private Double operand = null;
-    private Double secondOperand = null;
     private String pendingOperation = "=";
     HashMap<String, Button> buttonsWithNumber = new HashMap<String, Button>();
     HashMap<String, Button> buttonsWithOperation = new HashMap<String, Button>();
-
+    // TODO
+    // create a button that will make input negative,
+    // if there is no value put minus and next number make negative
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
