@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity
     Context context;
 
     private Double operand = null;
+    private Double firstVal;
     private String pendingOperation = "=";
     HashMap<String, Button> buttonsWithNumber = new HashMap<String, Button>();
     HashMap<String, Button> buttonsWithOperation = new HashMap<String, Button>();
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity
         newNumber = (EditText) findViewById(R.id.newNumber);
         displayOperation = (TextView) findViewById(R.id.operation);
         context = getApplicationContext();
-        Log.d("START", "wchodze");
 
         setButtonsWithNumber();
         setButtonsWithOperations();
@@ -54,7 +54,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 Button b = (Button) view;
-                newNumber.append(b.getText().toString());
+                String buttonText = b.getText().toString();
+                if (operand == null)
+                {
+                    firstVal = Double.valueOf(buttonText);
+                    result.append(String.valueOf(firstVal));
+                    return;
+                }
+                newNumber.append(buttonText);
             }
         };
         setButtonOnClickNumbers(onClickNumberListener);
@@ -66,7 +73,8 @@ public class MainActivity extends AppCompatActivity
             {
                 Button button = (Button) view;
                 String operation = button.getText().toString();
-                String value = newNumber.getText().toString();
+                String value = operand == null ? String.valueOf(firstVal) :
+                        newNumber.getText().toString();
                 if(value.length() != 0 )
                 {
                     tryToPerformOperation(value, operation);
@@ -94,10 +102,8 @@ public class MainActivity extends AppCompatActivity
     {
         if (operand == null) {
             operand = value;
-            updateResultAndNewNumberTextField();
             return;
         }
-
 
         if (pendingOperation.equals("="))
         {
@@ -109,14 +115,8 @@ public class MainActivity extends AppCompatActivity
                 operand = value;
                 break;
             case "/":
-                if (value == 0) {
-
-                    operand = 0.0;
-                }
-                else
-                {
-                    operand /= value;
-                }
+                operand = (value == 0 ?
+                        0.0 : (operand /= value));
                 break;
             case "*":
                 operand *= value;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
     private void updateResultAndNewNumberTextField()
     {
-        result.setText(operand.toString());
+        result.setText(operand == null ? firstVal.toString() : operand.toString());
         newNumber.setText("");
     }
 
@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity
         buttonsWithOperation.put("buttonMultiply", (Button) findViewById(R.id.buttonMultiply));
         buttonsWithOperation.put("buttonMinus", (Button) findViewById(R.id.buttonMinus));
         buttonsWithOperation.put("buttonPlus", (Button) findViewById(R.id.buttonPlus));
-//        buttonsWithOperation.put("buttonDot", (Button) findViewById(R.id.buttonDot));
     }
 
     public void setButtonOnClickNumbers(View.OnClickListener listener)
@@ -198,5 +197,19 @@ public class MainActivity extends AppCompatActivity
         outState.putString("OPERATION", pendingOperation);
         outState.putString("DISPLAY",result.getText().toString());
         super.onSaveInstanceState(outState);
+    }
+
+    public void setNegativeValue(View v)
+    {
+        if(operand == null && firstVal != null)
+        {
+            firstVal *= -1;
+            updateResultAndNewNumberTextField();
+        }
+        else if(operand != null)
+        {
+            operand *= -1;
+            updateResultAndNewNumberTextField();
+        }
     }
 }

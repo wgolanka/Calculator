@@ -163,14 +163,15 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/button6"
-        app:layout_constraintLeft_toRightOf="@+id/button6"/>
+        app:layout_constraintLeft_toRightOf="@+id/button6"
+        tools:ignore="HardcodedText"/>
 
     <Button
         android:id="@+id/buttonMinus"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:text="-"
+        android:text="@string/minus"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/button3"
@@ -181,7 +182,7 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:text="+"
+        android:text="@string/re"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonEquals"
@@ -194,7 +195,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:minWidth="48dp"
-        android:text="."
+        android:text="@string/dot"
         app:layout_constraintBaseline_toBaselineOf="@+id/button0"
         app:layout_constraintLeft_toRightOf="@+id/button0" />
 
@@ -207,5 +208,16 @@
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonDot"
         app:layout_constraintLeft_toRightOf="@+id/buttonDot"/>
+
+    <Button
+        android:id="@+id/negative"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/n"
+        android:onClick="setNegativeValue"
+        app:layout_constraintRight_toRightOf="@+id/buttonPlus"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlus"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CalculatorApp</string>
+    <string name="re">+</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="n">N</string>
 </resources>
