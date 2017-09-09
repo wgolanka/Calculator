@@ -20,11 +20,10 @@ public class MainActivity extends AppCompatActivity
     Context context;
 
     private Double operand = null;
-//    private Double firstVal;
     private String pendingOperation = "=";
     boolean isFirstValReady = false;
-    HashMap<String, Button> buttonsWithNumber = new HashMap<String, Button>();
-    HashMap<String, Button> buttonsWithOperation = new HashMap<String, Button>();
+    HashMap<String, Button> buttonsWithNumber = new HashMap<>();
+    HashMap<String, Button> buttonsWithOperation = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
         {
-//            firstVal = savedInstanceState.getDouble("FIRST_VALUE");
             operand = savedInstanceState.getDouble("OPERAND");
             pendingOperation = savedInstanceState.getString("OPERATION");
         }
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         setButtonsWithNumber();
         setButtonsWithOperations();
 
-        final View.OnClickListener onClickNumberListener = new View.OnClickListener()
+        View.OnClickListener onClickNumberListener = new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -87,6 +85,30 @@ public class MainActivity extends AppCompatActivity
         setButtonOnClickOperations(onClickOperationListener);
     }
 
+    public void setButtonsWithNumber()
+    {
+        String buttonNumber;
+        int numberOfButtons = 11;
+        for(int i = 0; i < numberOfButtons; i++)
+        {
+            buttonNumber = "button" + i;
+            if(i == 10)
+                buttonNumber = "buttonDot";
+
+            int id = getResources().getIdentifier(buttonNumber, "id", PACKAGE_NAME);
+            Button button = (Button) findViewById(id);
+            Log.d("BUTTON_ID", buttonNumber);
+            buttonsWithNumber.put(buttonNumber, button);
+        }
+    }
+
+    public void setButtonOnClickNumbers(View.OnClickListener listener)
+    {
+        for(Button button : buttonsWithNumber.values())
+        {
+            button.setOnClickListener(listener);
+        }
+    }
     private void setResultForFirstValue(String buttonText)
     {
         if (operand != null)
@@ -106,7 +128,14 @@ public class MainActivity extends AppCompatActivity
             result.setText(String.valueOf(operand));
         }
     }
-
+    private void setButtonsWithOperations()
+    {
+        buttonsWithOperation.put("buttonEquals", (Button) findViewById(R.id.buttonEquals));
+        buttonsWithOperation.put("buttonDivide", (Button) findViewById(R.id.buttonDivide));
+        buttonsWithOperation.put("buttonMultiply", (Button) findViewById(R.id.buttonMultiply));
+        buttonsWithOperation.put("buttonMinus", (Button) findViewById(R.id.buttonMinus));
+        buttonsWithOperation.put("buttonPlus", (Button) findViewById(R.id.buttonPlus));
+    }
     private void tryToPerformOperation(String value, String operation)
     {
         try
@@ -160,40 +189,6 @@ public class MainActivity extends AppCompatActivity
     {
         result.setText(String.valueOf(operand));
         newNumber.setText("");
-    }
-
-    public void setButtonsWithNumber()
-    {
-        String buttonNumber;
-        int numberOfButtons = 11;
-        for(int i = 0; i < numberOfButtons; i++)
-        {
-            buttonNumber = "button" + i;
-            if(i == 10)
-                buttonNumber = "buttonDot";
-
-            int id = getResources().getIdentifier(buttonNumber, "id", PACKAGE_NAME);
-            Button button = (Button) findViewById(id);
-            Log.d("BUTTON_ID", buttonNumber);
-            buttonsWithNumber.put(buttonNumber, button);
-        }
-    }
-
-    private void setButtonsWithOperations()
-    {
-        buttonsWithOperation.put("buttonEquals", (Button) findViewById(R.id.buttonEquals));
-        buttonsWithOperation.put("buttonDivide", (Button) findViewById(R.id.buttonDivide));
-        buttonsWithOperation.put("buttonMultiply", (Button) findViewById(R.id.buttonMultiply));
-        buttonsWithOperation.put("buttonMinus", (Button) findViewById(R.id.buttonMinus));
-        buttonsWithOperation.put("buttonPlus", (Button) findViewById(R.id.buttonPlus));
-    }
-
-    public void setButtonOnClickNumbers(View.OnClickListener listener)
-    {
-        for(Button button : buttonsWithNumber.values())
-        {
-            button.setOnClickListener(listener);
-        }
     }
 
     public void setButtonOnClickOperations(View.OnClickListener listener)
