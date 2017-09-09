@@ -235,13 +235,13 @@
         tools:layout_editor_absoluteX="296dp"/>
 
     <Button
-        android:id="@+id/negative"
+        android:id="@+id/opposite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="N"
-        android:onClick="setNegativeValue"
+        android:text="*(-1)"
+        android:onClick="onClickOppositeButton"
         app:layout_constraintRight_toRightOf="@+id/result"
         app:layout_constraintTop_toBottomOf="@+id/result"/>
 </android.support.constraint.ConstraintLayout>

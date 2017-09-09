@@ -20,19 +20,19 @@ public class MainActivity extends AppCompatActivity
     Context context;
 
     private Double operand = null;
-    private Double firstVal;
+//    private Double firstVal;
     private String pendingOperation = "=";
+    boolean isFirstValReady = false;
     HashMap<String, Button> buttonsWithNumber = new HashMap<String, Button>();
     HashMap<String, Button> buttonsWithOperation = new HashMap<String, Button>();
-    // TODO
-    // create a button that will make input negative,
-    // if there is no value put minus and next number make negative
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
         {
+//            firstVal = savedInstanceState.getDouble("FIRST_VALUE");
             operand = savedInstanceState.getDouble("OPERAND");
             pendingOperation = savedInstanceState.getString("OPERATION");
         }
@@ -48,17 +48,17 @@ public class MainActivity extends AppCompatActivity
         setButtonsWithNumber();
         setButtonsWithOperations();
 
-        View.OnClickListener onClickNumberListener = new View.OnClickListener()
+        final View.OnClickListener onClickNumberListener = new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 Button b = (Button) view;
                 String buttonText = b.getText().toString();
-                if (operand == null)
+
+                if (!isFirstValReady)
                 {
-                    firstVal = Double.valueOf(buttonText);
-                    result.append(String.valueOf(firstVal));
+                    setResultForFirstValue(buttonText);
                     return;
                 }
                 newNumber.append(buttonText);
@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                isFirstValReady = true;
                 Button button = (Button) view;
                 String operation = button.getText().toString();
-                String value = operand == null ? String.valueOf(firstVal) :
-                        newNumber.getText().toString();
+                String value = newNumber.getText().toString();
                 if(value.length() != 0 )
                 {
                     tryToPerformOperation(value, operation);
@@ -85,6 +85,26 @@ public class MainActivity extends AppCompatActivity
         };
 
         setButtonOnClickOperations(onClickOperationListener);
+    }
+
+    private void setResultForFirstValue(String buttonText)
+    {
+        if (operand != null)
+        {
+            String newVal = String.valueOf( operand.intValue()) +
+                    String.valueOf(Integer.valueOf(buttonText));
+            operand = Double.valueOf(newVal);
+            result.setText(String.valueOf(operand));
+        }
+        else
+        {
+            operand = Double.valueOf(buttonText);
+            if (result.getText().toString().equals("-"))
+            {
+                setNumberOppositeValue();
+            }
+            result.setText(String.valueOf(operand));
+        }
     }
 
     private void tryToPerformOperation(String value, String operation)
@@ -104,11 +124,15 @@ public class MainActivity extends AppCompatActivity
             operand = value;
             return;
         }
-
-        if (pendingOperation.equals("="))
+        if (pendingOperation == null)
+        {
+            return;
+        }
+        else if (pendingOperation.equals("="))
         {
             pendingOperation = operation;
         }
+
         switch (pendingOperation)
         {
             case "=":
@@ -134,7 +158,7 @@ public class MainActivity extends AppCompatActivity
 
     private void updateResultAndNewNumberTextField()
     {
-        result.setText(operand == null ? firstVal.toString() : operand.toString());
+        result.setText(String.valueOf(operand));
         newNumber.setText("");
     }
 
@@ -181,35 +205,56 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+
         operand = savedInstanceState.getDouble("OPERAND");
+        pendingOperation = savedInstanceState.getString("OPERATION");
         displayOperation.setText(savedInstanceState.getString("OPERATION"));
         result.setText(savedInstanceState.getString("DISPLAY"));
+        Log.d("onRestoreInst", result.toString());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-        if (operand == null)
-            return;
-
-        outState.putDouble("OPERAND", operand);
+        if (operand != null)
+        {
+            outState.putDouble("OPERAND", operand);
+        }
         outState.putString("OPERATION", pendingOperation);
         outState.putString("DISPLAY",result.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
-    public void setNegativeValue(View v)
+    public void onClickOppositeButton(View v)
     {
-        if(operand == null && firstVal != null)
+       setNumberOppositeValue();
+    }
+
+    private void setNumberOppositeValue()
+    {
+        if(operand != null)
         {
-            firstVal *= -1;
-            updateResultAndNewNumberTextField();
-        }
-        else if(operand != null)
-        {
+            Log.d("setNumberOppos oper", String.valueOf(operand));
             operand *= -1;
-            updateResultAndNewNumberTextField();
+            result.setText(String.valueOf(operand));
+        }
+        else
+        {
+            setResultTextOppositeSymbol();
+        }
+    }
+
+    private void setResultTextOppositeSymbol()
+    {
+        if ((result.getText().toString().equals("-")))
+        {
+            result.setText("");
+        }
+        else
+        {
+            result.setText("-");
         }
     }
 }
