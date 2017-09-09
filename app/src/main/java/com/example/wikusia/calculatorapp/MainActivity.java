@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (!isFirstValReady)
                 {
-                    setResultForFirstValue(buttonText);
+                    tryToSetResultForFirstValue(buttonText);
                     return;
                 }
                 newNumber.append(buttonText);
@@ -109,6 +109,19 @@ public class MainActivity extends AppCompatActivity
             button.setOnClickListener(listener);
         }
     }
+
+    private void tryToSetResultForFirstValue(String buttonText)
+    {
+        try
+        {
+            setResultForFirstValue(buttonText);
+        }
+        catch (NumberFormatException exc)
+        {
+            Log.d("tryToSetResult", "NumberFormatExc");
+        }
+    }
+
     private void setResultForFirstValue(String buttonText)
     {
         if (operand != null)
@@ -251,5 +264,20 @@ public class MainActivity extends AppCompatActivity
         {
             result.setText("-");
         }
+    }
+
+    public void onClickClear(View v)
+    {
+        clearAll();
+    }
+
+    private void clearAll()
+    {
+        operand = null;
+        isFirstValReady = false;
+        pendingOperation = "";
+        newNumber.setText("");
+        result.setText("");
+        displayOperation.setText("");
     }
 }
