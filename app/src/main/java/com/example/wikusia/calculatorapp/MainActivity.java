@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     boolean isFirstValReady = false;
     HashMap<String, Button> buttonsWithNumber = new HashMap<>();
     HashMap<String, Button> buttonsWithOperation = new HashMap<>();
+    ImageView myImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity
         newNumber = (EditText) findViewById(R.id.newNumber);
         displayOperation = (TextView) findViewById(R.id.operation);
         context = getApplicationContext();
-
+        myImage = (ImageView) findViewById(R.id.imageView);
+        myImage.setAlpha(0.5f);
         setButtonsWithNumber();
         setButtonsWithOperations();
 
