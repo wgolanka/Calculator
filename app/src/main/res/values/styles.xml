@@ -5,7 +5,9 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@drawable/cosmos3</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@android:style/Widget.Holo.Button</item>
     </style>
 
 </resources>
