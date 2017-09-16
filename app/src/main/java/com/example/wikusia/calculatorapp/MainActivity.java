@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         PACKAGE_NAME = getApplicationContext().getPackageName();
         result = (EditText) findViewById(R.id.result);
         newNumber = (EditText) findViewById(R.id.newNumber);
+        newNumber.setFocusable(false);
         displayOperation = (TextView) findViewById(R.id.operation);
         context = getApplicationContext();
         myImage = (ImageView) findViewById(R.id.imageView);
